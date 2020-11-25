@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "baseUrl": ".",
+    "strict": true,
+    "paths": {
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/config/*": [
+        "config/*"
+      ],
+      "@/helpers/*": [
+        "helpers/*"
+      ],
+      "@/service/*": [
+        "service/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+    },
+    "allowSyntheticDefaultImports": true
+  }
+}

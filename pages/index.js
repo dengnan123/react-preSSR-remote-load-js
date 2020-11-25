@@ -1,10 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import fetch from 'isomorphic-fetch';
 import * as ReactDOM from 'react-dom';
 import * as PropTypes from 'prop-types';
 import echarts from 'echarts';
-
 const vm = require('vm');
 
 const testProps = {
@@ -240,6 +238,7 @@ const testProps = {
     minW: 2,
   },
 };
+
 export default function Home({ MyComponentStr }) {
   const [MyComponent, setComp] = useState();
   useEffect(() => {
@@ -264,7 +263,8 @@ export default function Home({ MyComponentStr }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps(props) {
+  console.log('22222', props);
   const res = await fetch('https://3dl.dfocus.top/api/static/dist/Bar/lib.js');
   const script = await res.text();
   return {

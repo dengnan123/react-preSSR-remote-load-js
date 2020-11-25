@@ -1,0 +1,68 @@
+.PreviewDiv {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-origin: 0 0;
+  transition: all 0.3s linear;
+  // background: rgba(14, 28, 50, 0.98);
+  overflow-y: auto;
+
+  * {
+    user-select: none;
+  }
+  .hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
+  .show {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.3s linear;
+  }
+}
+.btn {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 999;
+}
+
+.btnLine {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 999;
+}
+.listLoading {
+  position: absolute;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  transition: all 0.3s linear;
+  transform-origin: center;
+  background-color: #fff;
+  left: 0px;
+  top: 0px;
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  img {
+    margin: 0 auto;
+    // width: 200px;
+    // height: 200px;
+  }
+}
+.hiddenLoading {
+  animation: hide 0.5s forwards;
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
