@@ -8,8 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "antd": "3.26.15",
+    "echarts": "^4.9.0",
+    "isomorphic-fetch": "^3.0.0",
+    "moment": "2.29.1",
     "next": "10.0.3",
+    "prop-types": "^15.7.2",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "scriptjs": "^2.5.9",
+    "vm": "^0.1.0",
+    "vm2": "^3.9.2"
   }
 }
