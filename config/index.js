@@ -17,7 +17,8 @@ export const injectedModule = 'dfocus';
 // http://40.72.105.107:3003
 // http://localhost:3030/static 本地组件库
 // http://3dl.dfocus.top/api/static/dist 测试组件库
-export const API_HOST = !isProduction ? 'https://3dl.dfocus.top/api' : 'API_HOST_PROD';
+// export const API_HOST = !isProduction ? 'https://3dl.dfocus.top/api' : 'API_HOST_PROD';
+export const API_HOST = 'https://3dl.dfocus.top/api';
 export const API_BUILD_HOST = !isProduction
   ? 'https://3dl.dfocus.top/build'
   : 'API_BUILD_HOST_PROD';

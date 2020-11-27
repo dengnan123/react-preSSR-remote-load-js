@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { setLocaleMode } from '@/helpers/storage';
-import { fetchPageUseCompList, fetchPageConfig, getAllDataSource } from '../../service';
+import { fetchPageUseCompList, fetchPageConfig, getAllDataSource } from '@/service/index';
 import { findApiHostList, findEnvList } from '@/service/apiHost';
 import { tranformPxToVw } from '@/helpers/screen';
 import { getParseSearch } from '@/helpers/utils';
-import fetch from 'isomorphic-fetch';
+
 import {
   getEventHashAndDrillDownHash,
   updateListBysaveDeps,
@@ -268,7 +268,7 @@ export const initFecth = async ({ pageId, tagId }) => {
       tagId,
     }),
   ]);
-  
+
   let initUseCompList = res[0].data;
   initUseCompList = dealWithInitData(initUseCompList);
   if (res[1].errorCode !== 200) {

@@ -11,9 +11,6 @@ import {
   getCompItemProps,
 } from '@/helpers/screen';
 export const isProduction = process.env.NODE_ENV === 'production';
-export const NODE_SERVER = !isProduction
-  ? 'http://localhost:3000'
-  : `http://${window?.location?.host}`;
 
 // 获取元素的绝对位置坐标（像对于页面左上角）
 export const getElementPagePosition = (element) => {

@@ -1,0 +1,130 @@
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  position: relative;
+  /* font-family: -apple-system, BlikMacSystemFont, 'PingFang SC', 'SF Pro Display', 'San Francisco',
+    'Segoe UI', 'Roboto', 'Helvetica Neue', 'Helvetica', 'STXihei', 'Microsoft Yahei', 'Courier New',
+    'Courier', 'Heiti SC', 'Droid Sans', 'Droid Sans Fallback', 'Sans-serif' !important; */
+}
+
+body {
+  .loading {
+    position: absolute;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    left: 0px;
+    top: 0px;
+    visibility: visible;
+    opacity: 1;
+    overflow: hidden;
+    transition: opacity 0.3s linear, width 0.3s 0.3s linear, height 0.3s 0.3s linear;
+    > div {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 180px;
+      width: 120px;
+      margin-left: -60px;
+      margin-top: -90px;
+    }
+    .remove {
+      width: 0px;
+      height: 0px;
+      opacity: 0;
+    }
+    .text-loading {
+      position: absolute;
+      top: 60px;
+      width: 100%;
+      z-index: 10;
+      width: 100%;
+      height: 26px;
+      margin-top: -13px;
+      line-height: 26px;
+      color: #f18f5b;
+      font-size: 14px;
+      font-weight: bold;
+      opacity: 0;
+      text-align: center;
+      user-select: none;
+      animation: text-hide 2s linear infinite;
+      transition: color 0.5s ease-in-out;
+    }
+    .circle-loading {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 100;
+      width: 120px;
+      height: 120px;
+      margin-left: -60px;
+      border-radius: 100%;
+      border: 2px solid transparent;
+      border-color: transparent #f18f5b transparent #f18f5b;
+      animation: circle-rotate 1.5s linear infinite;
+      transition: border-color 0.5s ease-in-out;
+    }
+    .text-tip-loading {
+      position: absolute;
+      top: 140px;
+      width: 100%;
+      width: 100%;
+      height: 26px;
+      margin: 0;
+      line-height: 26px;
+      color: #f18f5b;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      user-select: none;
+      transition: color 0.5s ease-in-out;
+    }
+    > div:hover .text-loading {
+      color: #dc471d;
+    }
+    > div:hover .circle-loading {
+      border-color: transparent #dc471d transparent #dc471d;
+    }
+    > div:hover .text-tip-loading {
+      color: #dc471d;
+    }
+  }
+}
+
+@keyframes text-hide {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes circle-rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e6e6e6;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}

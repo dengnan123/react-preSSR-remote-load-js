@@ -1,275 +1,260 @@
-import React, { useEffect, useState } from 'react';
-import fetch from 'isomorphic-fetch';
+import React, { useRef, useCallback, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as PropTypes from 'prop-types';
-import echarts from 'echarts';
+import echarts from 'echarts'
+import { API_HOST } from '@/config/index';
+import styles from './index.less';
+import { withSize } from 'react-sizeme';
+import OnlyPre from '@/components/PreviewRender';
+import fetch from 'isomorphic-fetch';
+import Promise from 'bluebird';
+import * as antd from 'antd';
+import moment from 'moment';
+import '../node_modules/antd/dist/antd.min.css';
+// import PreviewGridRender from '@/components/PreviewGridRender';
+import { useModal, initFecth } from '@/hooks/useModal';
+import {
+  useTra,
+  useInit,
+  useLoading,
+  useWhenWidthChange,
+  useRegistInterval,
+  onChange,
+  onClick,
+  useHotUpdate,
+  useInitFetchData,
+  useDoPageShell,
+  useMoveEvent,
+  useLoadFuncToWindow,
+  useSetBodyStyle,
+  useSocket,
+} from '@/hooks/preview';
+import { IsPC } from '@/helpers/env';
+
 const vm = require('vm');
 
-const testProps = {
-  id: '29b98307-6281-4460-a202-b4b87d329816',
-  compId: 123,
-  pageId: 11201,
-  groupId: '96b9877e-49db-4c46-9b92-462053dc4cb0',
-  status: 0,
-  width: 450,
-  height: 300,
-  left: 400,
-  top: 20,
-  zIndex: 2,
-  compName: 'Bar',
-  mapId: null,
-  data: {
-    categories: ['一月', '二月', '三月', '四月', '五月', '六月'],
-    series: [
-      {
-        name: '出票量',
-        type: 'bar',
-        data: [1320, 1534, 3560, 1840, 3702, 2308],
-      },
-    ],
-  },
-  style: {
-    grid: {
-      leftType: 'px',
-      topType: 'px',
-      rightType: '%',
-      bottomType: 'px',
-      left: '50',
-      top: 0,
-      right: 0,
-      bottom: 0,
-    },
-    series: {
-      barGap: false,
-      stack: false,
-      label: {
-        show: true,
-        position: 'inside',
-        distance: 50,
-      },
-      xyInverse: true,
-      customizeBarWidth: false,
-      notDataColor: '#0089e9',
-      notDataFontSize: 20,
-      notDataPadding: 20,
-      barWithList: [],
-      zlevels: [null, null, null],
-      barWidth: 40,
-      barBorderLTRadius: 1,
-      barBorderRTRadius: 15,
-      barBorderRBRadius: 15,
-    },
-    legend: {
-      show: false,
-      itemGap: 10,
-      textStyle: {
-        fontSize: 12,
-        color: '#1d1818',
-      },
-      data: {
-        icon: '',
-      },
-      position: 'top',
-      distance: 0,
-      orient: 'horizontal',
-      align: 'auto',
-    },
-    xAxis: {
-      show: true,
-      type: 'category',
-      inverse: false,
-      boundaryGap: true,
-      axisLine: {
-        show: false,
-        lineStyle: {
-          color: '#1d1818',
-          opacity: 1,
-          width: 1,
-          type: 'solid',
-        },
-      },
-      nameTextStyle: {
-        color: '#1d1818',
-      },
-      nameGap: 15,
-      nameRotate: 0,
-      axisLabel: {
-        show: true,
-        inside: false,
-        rotate: 0,
-        margin: 8,
-        interval: 'auto',
-        fontSize: 16,
-        fontWeight: 'normal',
-        color: 'rgba(204,215,229,1)',
-      },
-      axisTick: {
-        show: false,
-        interval: 'auto',
-        inside: false,
-        length: 5,
-        lineStyle: {
-          color: '#ffff',
-          width: 1,
-          type: 'solid',
-        },
-      },
-      splitLine: {
-        show: false,
-        lineStyle: {
-          color: '#ffff',
-          width: 1,
-          type: 'solid',
-          opacity: 1,
-        },
-      },
-    },
-    yAxis: {
-      show: true,
-      type: 'value',
-      inverse: false,
-      boundaryGap: true,
-      axisLabel: {
-        show: false,
-        inside: false,
-        rotate: 0,
-        margin: 8,
-        interval: 'auto',
-        fontSize: 16,
-        fontWeight: 'normal',
-        color: 'rgba(204,215,229,1)',
-      },
-      axisLine: {
-        show: false,
-        lineStyle: {
-          color: '#1d1818',
-          opacity: 1,
-          width: 1,
-          type: 'solid',
-        },
-      },
-      axisTick: {
-        show: false,
-        interval: 'auto',
-        inside: false,
-        length: 5,
-        lineStyle: {
-          color: '#ffff',
-          width: 1,
-          type: 'solid',
-        },
-      },
-      splitLine: {
-        show: false,
-        lineStyle: {
-          color: '#ffff',
-          width: 1,
-          type: 'solid',
-          opacity: 1,
-        },
-      },
-    },
-    color: ['rgba(2,169,248,1)'],
-    tooltip: {
-      doTimer: false,
-      show: true,
-      backgroundColor: 'rgba(50,50,50,0.7)',
-      trigger: 'axis',
-    },
-  },
-  dataApiUrl: null,
-  autoRefresh: null,
-  fetchInterval: null,
-  useDataType: 'JSON',
-  translateX: null,
-  transformY: null,
-  basicStyle: {},
-  deps: [],
-  cacheParamsDeps: [],
-  aliasName: null,
-  isLocking: null,
-  clearParamsComps: [],
-  isHidden: 1,
-  loadingDeps: [],
-  nowPage: null,
-  openHighConfig: null,
-  containerDeps: [],
-  type: null,
-  isOpenDrillDown: null,
-  dataSourceName: null,
-  dataSourceId: [],
-  childDataSourceName: null,
-  dataSourceAssociation: null,
-  passParamsComps: [],
-  clickCallbackFunc: null,
-  hiddenComps: [],
-  clickCallbackFuncEs5Code: null,
-  showComps: [],
-  onClickCallbackFunc: null,
-  onClickCallbackFuncEs5Code: null,
-  creatTime: '1605951489195',
-  filterFunc: null,
-  filterFuncEs5Code: null,
-  updateTime: '1606276040548',
-  authApiId: null,
-  authFunc: null,
-  authFuncEs5: null,
-  openAuthFunc: 0,
-  showCompsFilterFunc: null,
-  showCompsFilterFuncEs5Code: null,
-  openShowCompsFilterFunc: 0,
-  hiddenCompsFilterFunc: null,
-  hiddenCompsFilterFuncEs5Code: null,
-  openHiddenCompsFilterFunc: null,
-  openDepsFilterFunc: 0,
-  moveCallbackFuncEs5Code: null,
-  moveCallbackFunc: null,
-  depsFilterFunc: null,
-  depsFilterFuncEs5Code: null,
-  clearApiDeps: [],
-  openClearApiDepsFunc: 0,
-  clearApiDepsFunc: null,
-  clearApiDepsFuncEs5Code: null,
-  grid: {
-    x: 0,
-    y: 1,
-    w: 6,
-    h: 1,
-    minW: 2,
-  },
-};
+function App(props) {
+  const preview = useModal();
+  const {
+    init,
+    widthChangeFunc,
+    setHasData,
+    lang,
+    updateClearParams,
+    updatePassParamsHash,
+    passParamsHash,
+    fetchPageUseCompListApi,
+    updateCompsHiddenOrShow,
+    updateLoading,
+    setLang,
+    // apiHostList,
+    // envList,
+    // dataSourceList,
+    // initUseCompList: data,
+    // pageConfig,
+    // eventHash,
+  } = preview;
+  const {
+    size: { width },
+    envList = [],
+    apiHostList = [],
+    dataSourceList = [],
+    initUseCompList: data = [],
+    pageConfig = {},
+    eventHash = {},
+    jsArr,
+  } = props;
 
-export default function Home({ MyComponentStr }) {
-  const [MyComponent, setComp] = useState();
-  useEffect(() => {
-    const sandbox = {
-      React: React,
-      ReactDOM: ReactDOM,
-      PropTypes: PropTypes,
-      echarts: echarts,
-      MyComponent: null,
-      self: {},
-    };
-    vm.runInNewContext(MyComponentStr, sandbox);
-    const MyComponent = sandbox.BarLib || sandbox.BarLib.default;
-    setComp(<MyComponent {...testProps} />);
+  if (typeof window !== undefined) {
+    if (!window.hasLoadJs) {
+      // const sandbox = {
+      //   React: React,
+      //   ReactDOM: ReactDOM,
+      //   PropTypes: PropTypes,
+      //   MyComponent: null,
+      //   self: {},
+      // };
+      // for (const v of jsArr) {
+      //   const { MyComponentStr } = v;
+      //   vm.runInNewContext(MyComponentStr, sandbox);
+      //   window[v.key] = sandbox[v.key] || sandbox[v.key].default;
+      // }
+      window.React = React
+      window.ReactDOM = ReactDOM
+      window.PropTypes = PropTypes
+      window.moment = moment;
+      window.antd = antd;
+      window.echarts  = echarts
+      window.hasLoadJs = true;
+    }
+  }
+
+  useSetBodyStyle(pageConfig.type);
+
+  // 页面初始化后，执行页面插件
+  useDoPageShell({ pageConfig });
+
+  // 处理页面body样式
+  useLoadFuncToWindow({
+    setLang,
+  });
+
+  const idParamsRef = useRef({});
+  const cacheParamsRef = useRef({});
+  // emitter 逻辑
+  // 热更新逻辑
+  useHotUpdate({ pageConfig, fetchPageUseCompList: fetchPageUseCompListApi });
+  // useInit({ init });
+  useInitFetchData({ dataSourceList, setHasData, apiHostList, envList });
+  const { tra } = useTra({ pageConfig, data });
+  const { showLoading } = useLoading({ propsList: data });
+  useWhenWidthChange({ widthChangeFunc, width, pageConfig });
+  useRegistInterval({
+    dataSourceList,
+    setHasData,
+    idParamsRef,
+    cacheParamsRef,
+    envList,
+    apiHostList,
+  });
+  useMoveEvent(data);
+  const _onChange = useCallback(
+    (compData) => {
+      onChange({
+        data: compData,
+        eventHash,
+        idParamsRef,
+        setHasData,
+        dataSourceList,
+        cacheParamsRef,
+        updateClearParams,
+        updatePassParamsHash,
+        updateCompsHiddenOrShow,
+        updateLoading,
+        useCompList: data,
+        apiHostList,
+        envList,
+      });
+    },
+    [
+      eventHash,
+      setHasData,
+      updateCompsHiddenOrShow,
+      dataSourceList,
+      updateClearParams,
+      updatePassParamsHash,
+      updateLoading,
+      data,
+      apiHostList,
+      envList,
+    ],
+  );
+
+  const _onClick = useCallback((data) => {
+    onClick({ data });
   }, []);
 
+  /**
+   * socket逻辑
+   */
+  useSocket({
+    dataSourceList,
+    setHasData,
+    idParamsRef,
+    cacheParamsRef,
+    envList,
+    apiHostList,
+  });
+
+  let styleProps = {
+    width,
+    backgroundColor: pageConfig.bgc,
+    backgroundImage: `url(${API_HOST}/static/${pageConfig.id}/${pageConfig.bgi})`,
+    backgroundSize: 'cover',
+  };
+  if (pageConfig.type === 'allSpread') {
+    styleProps = {
+      ...styleProps,
+      transform: tra,
+      width: pageConfig.pageWidth,
+      height: pageConfig.pageHeight,
+    };
+  }
+  if (pageConfig.type === 'default') {
+    styleProps = {
+      ...styleProps,
+      width: pageConfig.pageWidth,
+      height: pageConfig.pageHeight,
+    };
+  }
+
+  const isGridLayout = pageConfig.layoutType && pageConfig.layoutType === 'grid';
+  const commonProps = {
+    onChange: _onChange,
+    onClick: _onClick,
+    updateCompsHiddenOrShow,
+    dataSource: preview,
+    lang,
+    data,
+    pageConfig,
+    otherCompParams: passParamsHash,
+  };
   return (
-    <div>
-      <p>Hello from Next.js</p>
-      {MyComponent}
-    </div>
+    <>
+      {IsPC() ? (
+        <div style={{ fontSize: 15, textAlign: 'center' }}>暂不支持手机端查看 请在电脑端打开！</div>
+      ) : (
+        <div
+          style={{
+            fontFamily: 'myFont',
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+            overflow: showLoading ? 'hidden' : null,
+          }}
+        >
+          <div className={styles.PreviewDiv} style={styleProps} id="containerDiv">
+            {data.map((v) => {
+              const _props = {
+                ...commonProps,
+                v,
+                authDataSource: preview[v.authApiId], // 组件关联的数据权限数据源
+              };
+              return <OnlyPre {..._props} key={v.id}></OnlyPre>;
+            })}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
+export default withSize()(App);
+
 export async function getStaticProps(props) {
-  console.log('22222', props);
-  const res = await fetch('https://3dl.dfocus.top/api/static/dist/Bar/lib.js');
-  const script = await res.text();
+  const data = await initFecth({
+    pageId: 11287,
+    tagId: 12,
+  });
+  // const newRes = await Promise.map(
+  //   data.initUseCompList,
+  //   async (v) => {
+  //     const res = await fetch(`https://3dl.dfocus.top/api/static/dist/${v.compName}/lib.js`);
+  //     const MyComponentStr = await res.text();
+  //     return {
+  //       ...v,
+  //       MyComponentStr,
+  //     };
+  //   },
+  //   {
+  //     concurrency: 10,
+  //   },
+  // );
+  // console.log('newResnewRes', newRes.length);
   return {
     props: {
-      MyComponentStr: script,
+      ...data,
+
     },
   };
 }

@@ -12,6 +12,7 @@ export function fetchPageUseCompList(opts) {
   // if (isPrivateDeployment) {
   //   return loadScript(`./pageStatic/${opts.pageId}-pageComp.js`, 'DP_STATIC_PAGECOMP');
   // }
+  console.log('fetchPageUseCompList');
   return API.get(`/page-comp/${opts.pageId}`, { params: opts });
 }
 
@@ -33,7 +34,7 @@ export function delPage(params) {
 // 获取所有大屏列表
 export function fetchPageList(opts) {
   const res = API.get(`/page`, { params: opts });
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(res);
     }, 300);
@@ -42,7 +43,7 @@ export function fetchPageList(opts) {
 // 获取所有大屏项目tag
 export function fetchProjectList(opts) {
   const res = API.get(`/tag`, { params: opts });
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(res);
     }, 300);
@@ -94,6 +95,7 @@ export function fetchPageConfig(opts) {
   // if (isPrivateDeployment) {
   //   return loadScript(`./pageStatic/${opts.pageId}-page.js`, 'DP_STATIC_PAGE');
   // }
+  console.log('fetchPageConfig');
   return API.get(`/page/${opts.pageId}`);
 }
 
@@ -151,6 +153,7 @@ export function getAllDataSource(opts) {
   // if (isPrivateDeployment) {
   //   return loadScript(`./pageStatic/${opts.pageId}-dataSource.js`, 'DP_STATIC_DATASOURCE');
   // }
+  console.log('getAllDataSource');
   return API.get(`/page/dataSource/all`, { params: opts });
 }
 
@@ -289,7 +292,7 @@ export function uploadImage(params) {
 // 组件上传图片
 export function pluginMenu(params) {
   const res = API.get(`/pluginTag/menu`, { params });
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(res);
     }, 300);

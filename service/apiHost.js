@@ -19,6 +19,7 @@ export function findApiHostList(opts) {
   // if (isPrivateDeployment) {
   //   return loadScript(`./pageStatic/apiHost.js`, 'DP_STATIC_APIHOST');
   // }
+  console.log('findApiHostList')
   return API.get(`/apiHost`, { params: opts });
 }
 
@@ -38,6 +39,7 @@ export function findEnvList(opts) {
   // if (isPrivateDeployment) {
   //   return loadScript(`./pageStatic/env.js`, 'DP_STATIC_ENV');
   // }
+  console.log('findEnvList')
   return API.get(`/apiHost/env`, { params: opts });
 }
 
